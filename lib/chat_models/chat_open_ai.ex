@@ -57,7 +57,7 @@ defmodule LangChain.ChatModels.ChatOpenAI do
           {:ok, Message.t() | MessageDelta.t() | [Message.t() | MessageDelta.t()]}
           | {:error, String.t()}
 
-  @create_fields [:model, :temperature, :frequency_penalty, :n, :stream, :receive_timeout]
+  @create_fields [:endpoint, :model, :temperature, :frequency_penalty, :n, :stream, :receive_timeout]
   @required_fields [:model]
 
   @spec get_api_key() :: String.t()
@@ -220,7 +220,7 @@ defmodule LangChain.ChatModels.ChatOpenAI do
       Req.new(
         url: openai.endpoint,
         json: for_api(openai, messages, functions),
-        auth: {:bearer, get_api_key()},
+        headers: %{"api-key" => get_api_key()},
         receive_timeout: openai.receive_timeout
       )
 
